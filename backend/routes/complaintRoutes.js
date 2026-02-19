@@ -1,8 +1,11 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
-import { createComplaint } from "../controllers/complaintController.js";
+import { 
+    createComplaint,
+    updateComplaintStatus 
+} from "../controllers/complaintController.js";
+
 import {protect} from "../middleware/authMiddleware.js"
-import { updateComplaintStatus } from "../controllers/complaintController.js";
 import { adminOnly } from "../middleware/adminMiddleware.js";
 
 

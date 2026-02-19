@@ -4,6 +4,13 @@ import cloudinary from "../config/cloudinary.js";
 
 export const createComplaint = async (req, res) => {
   try {
+    //  Block admin from creating complaint
+    if (req.user.role !== "villager") {
+      return res.status(403).json({
+        message: "Only villagers can create complaints"
+      });
+    }
+
     const { category, description } = req.body;
 
     let imageUrl = null;
@@ -21,7 +28,8 @@ export const createComplaint = async (req, res) => {
       user: req.user.id,
       category,
       description,
-      imageUrl
+      imageUrl,
+      status: "pending"
     });
 
     res.status(201).json(complaint);
@@ -33,30 +41,35 @@ export const createComplaint = async (req, res) => {
 };
 
 
-//admin update status
-
 export const updateComplaintStatus = async (req, res) => {
   try {
-    const { status } = req.body;
-
-    const allowedStatuses = ["pending", "in-progress", "resolved"];
-
-    if (!allowedStatuses.includes(status)) {
-      return res.status(400).json({ message: "Invalid status value" });
-    }
-
     const complaint = await Complaint.findById(req.params.id);
 
     if (!complaint) {
-      return res.status(404).json({ message: "Complaint not found" });
+      return res.status(404).json({
+        message: "Complaint not found"
+      });
     }
 
-    complaint.status = status;
+    // Prevent double resolving
+    if (complaint.status === "resolved") {
+      return res.status(400).json({
+        message: "Complaint already resolved"
+      });
+    }
+
+    complaint.status = "resolved";
+
     await complaint.save();
 
-    res.json({ message: "Status updated successfully", complaint });
+    res.status(200).json({
+      message: "Complaint resolved successfully",
+      complaint
+    });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message
+    });
   }
 };
