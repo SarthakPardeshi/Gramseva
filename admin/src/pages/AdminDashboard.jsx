@@ -13,47 +13,6 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 font-sans">
       
-      {/* ================= NAVBAR ================= */}
-      <nav className="bg-white shadow-md px-10 py-4 flex justify-between items-center sticky top-0 z-50">
-        {/* Logo */}
-        <h1 
-          className="text-2xl font-black text-blue-800 cursor-pointer tracking-tight"
-          onClick={() => setActiveNav("home")}
-        >
-          GRAM <span className="text-orange-500">PANCHAYAT</span>
-        </h1>
-
-        {/* Desktop Navigation */}
-        <div className="flex items-center gap-8 text-gray-600 font-semibold">
-          {["home", "notices", "complaints"].map((item) => (
-            <span
-              key={item}
-              onClick={() => setActiveNav(item)}
-              className={`cursor-pointer capitalize transition-all duration-200 border-b-2 ${
-                activeNav === item 
-                ? "text-blue-600 border-blue-600" 
-                : "border-transparent hover:text-blue-500"
-              }`}
-            >
-              {item}
-            </span>
-          ))}
-
-          {/* Admin Panel Toggle Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveNav("admin")}
-            className={`px-5 py-2 rounded-full font-bold transition-all ${
-              activeNav === "admin" 
-                ? "bg-blue-800 text-white shadow-lg" 
-                : "bg-blue-600 text-white hover:bg-blue-700 shadow-md"
-            }`}
-          >
-            Admin Panel
-          </motion.button>
-        </div>
-      </nav>
 
       {/* ================= MAIN CONTENT AREA ================= */}
       <main className="flex-1 px-6 md:px-12 py-8">

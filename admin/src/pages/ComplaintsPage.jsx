@@ -13,7 +13,7 @@ const ComplaintsPage = () => {
       _id: "2",
       category: "water",
       description: "Water leakage in street",
-      status: "in-progress",
+      status: "pending",
     },
     {
       _id: "3",
@@ -61,8 +61,6 @@ const ComplaintsPage = () => {
             className={`font-medium ${
               complaint.status === "pending"
                 ? "text-yellow-500"
-                : complaint.status === "in-progress"
-                ? "text-blue-500"
                 : "text-green-600"
             }`}
           >
@@ -77,7 +75,6 @@ const ComplaintsPage = () => {
             className="border px-3 py-1 rounded-md cursor-pointer"
           >
             <option value="pending">pending</option>
-            <option value="in-progress">in-progress</option>
             <option value="resolved">resolved</option>
           </select>
         </motion.div>
