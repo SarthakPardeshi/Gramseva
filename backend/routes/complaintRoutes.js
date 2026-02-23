@@ -1,8 +1,10 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
+
 import { 
     createComplaint,
-    updateComplaintStatus 
+    updateComplaintStatus,
+    getMyComplaints
 } from "../controllers/complaintController.js";
 
 import {protect} from "../middleware/authMiddleware.js"
@@ -13,7 +15,7 @@ const router = express.Router();
 
 router.post("/", protect, upload.single("image"), createComplaint);
 router.patch("/:id/status", protect, adminOnly, updateComplaintStatus);
-
+router.get("/my", protect, getMyComplaints); // Use this for 'Track My Complaints'
 
 
 export default router;

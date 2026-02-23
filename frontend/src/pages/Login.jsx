@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Landmark, Lock, Mail, ArrowRight } from 'lucide-react';
+import { Landmark, Lock, Phone, ArrowRight } from 'lucide-react'; // Swapped Mail for Phone
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
+import { useAuth } from '../context/AuthContext'; // Imported to update global state
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  // Changed email to mobile
+  const [formData, setFormData] = useState({ mobile: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth(); // Destructured the login function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
+      
+      // Update global context AND localStorage simultaneously 
+      login(res.data.user, res.data.token);
+      
       navigate('/'); 
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
@@ -55,20 +61,22 @@ const LoginPage = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Updated Mobile Number Field */}
             <div className="space-y-2">
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Mobile Number</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
-                  type="email" 
+                  type="tel" 
                   required
                   className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500 transition-all font-medium"
-                  placeholder="name@village.com"
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="9900000000"
+                  onChange={(e) => setFormData({...formData, mobile: e.target.value})}
                 />
               </div>
             </div>
 
+            {/* Password Field */}
             <div className="space-y-2">
               <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
               <div className="relative">

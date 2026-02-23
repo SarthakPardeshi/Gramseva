@@ -17,10 +17,26 @@ export const register = async (req, res) => {
       name,
       mobile,
       password: hashedPassword,
-      role
+      role: role || 'villager' // Default to villager if not provided
     });
 
-    res.status(201).json({ message: "User registered successfully" });
+    // 1. Generate the JWT token for the new user
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // 2. Send back the token and user data alongside the success message
+    res.status(201).json({ 
+      message: "User registered successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        role: user.role
+      }
+    });
 
   } catch (error) {
     res.status(500).json({ message: error.message });

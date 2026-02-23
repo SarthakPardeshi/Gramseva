@@ -16,7 +16,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/notices", noticeRoutes);
-app.use("/api/complaint", complaintsRoutes);
+app.use("/api/complaints", complaintsRoutes);
 //imp:  why we use /api every time because we want to maintain a clean and organized structure for our API endpoints. By prefixing our routes with "/api", we can easily distinguish between routes that serve the frontend (like static files) and routes that serve the backend API. This also helps in versioning our API in the future if needed (e.g., "/api/v1/complaint").
 
 
