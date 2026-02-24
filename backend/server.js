@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import noticeRoutes from "./routes/noticeRoutes.js"
-import complaintsRoutes from "./routes/complaintRoutes.js";  
+import complaintsRoutes from "./routes/complaintRoutes.js";
 
 dotenv.config();
 
@@ -21,9 +21,22 @@ app.use("/api/complaints", complaintsRoutes);
 
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("MongoDB Error:", err) );
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000, // Timeout after 10s instead of 30s
+    });
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error("❌ MongoDB Connection Failed:");
+    console.error(`   Code: ${err.code}`);
+    console.error(`   Message: ${err.message}`);
+    console.error("\n👉 Fix: Go to MongoDB Atlas → Network Access → Add your current IP");
+    process.exit(1); // Exit process so nodemon can restart cleanly
+  }
+};
+
+connectDB();
 
 const PORT = process.env.PORT || 5000;
 
