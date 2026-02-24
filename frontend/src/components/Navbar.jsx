@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Landmark, Languages } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '../context/AuthContext'; // Import the hook
+import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const [lang, setLang] = useState('EN'); // Default language is English
+  const { lang, setLang, t } = useLanguage();
   const { user, logout } = useAuth(); // Get user and logout from context
   const navigate = useNavigate();
 
@@ -27,16 +28,16 @@ const Navbar = () => {
           <div className="bg-orange-600 p-1.5 rounded-lg text-white">
             <Landmark size={24} />
           </div>
-          <span className="hidden sm:inline">Gram Panchayat</span>
+          <span className="hidden sm:inline">{t('gram_panchayat')}</span>
         </Link>
       </motion.div>
 
       {/* Navigation Links */}
       <div className="hidden md:flex gap-8 text-sm font-semibold text-gray-600">
         {[
-          { path: "/", label: "Home" },
-          { path: "/notices", label: "Notices" },
-          { path: "/complaints", label: "Complaints" }
+          { path: "/", label: t('nav_home') },
+          { path: "/notices", label: t('nav_notices') },
+          { path: "/complaints", label: t('nav_complaints') }
         ].map((link) => (
           <NavLink
             key={link.path}
@@ -92,7 +93,7 @@ const Navbar = () => {
               onClick={handleLogout}
               className="px-5 py-2.5 rounded-xl text-sm font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-300 transform active:scale-95"
             >
-              Logout
+              {t('nav_logout')}
             </button>
           </div>
         ) : (
@@ -106,7 +107,7 @@ const Navbar = () => {
               }
             `}
           >
-            Login
+            {t('nav_login')}
           </NavLink>
         )}      </div>
     </motion.nav>

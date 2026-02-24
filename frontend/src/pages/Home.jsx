@@ -3,6 +3,7 @@ import { FileText, MessageSquare, Users, Landmark, Download } from 'lucide-react
 import { motion } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
 import { NavLink, Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 
 
@@ -26,6 +27,8 @@ const itemVariants = {
 };
 
 const Home = () => {
+  const { t } = useLanguage();
+
   return (
     <PageTransition>
       <motion.div
@@ -36,23 +39,23 @@ const Home = () => {
         {/* Hero Section with Internal Staggered Animation */}
         <header className="bg-orange-500 py-24 px-4 text-center text-white">
           <motion.h1 variants={itemVariants} className="text-5xl font-black mb-4">
-            Digital Gram Panchayat
+            {t('hero_title')}
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl opacity-90 mb-10 font-medium">
-            Connecting villages with transparent governance
+            {t('hero_subtitle')}
           </motion.p>
           <motion.div variants={itemVariants} className="flex justify-center gap-4">
             {/* Link to Notices Page */}
             <NavLink to="/notices">
               <button className="bg-white text-orange-600 px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-gray-100 transition active:scale-95 cursor-pointer">
-                View Notices
+                {t('btn_notices')}
               </button>
             </NavLink>
 
             {/* Link to Complaints Page */}
             <NavLink to="/complaints">
               <button className="bg-orange-700/30 border border-white/40 px-8 py-3 rounded-xl font-bold backdrop-blur-sm hover:bg-orange-700/50 transition active:scale-95 cursor-pointer">
-                File Complaint
+                {t('btn_complaint')}
               </button>
             </NavLink>
           </motion.div>        </header>

@@ -51,14 +51,14 @@ export const updateComplaintStatus = async (req, res) => {
       });
     }
 
-    // Prevent double resolving
-    if (complaint.status === "resolved") {
-      return res.status(400).json({
-        message: "Complaint already resolved"
-      });
-    }
+    const { status } = req.body;
 
-    complaint.status = "resolved";
+    // Check if status is provided, otherwise just toggle or stick to resolved
+    if (status) {
+      complaint.status = status;
+    } else {
+      complaint.status = "resolved";
+    }
 
     await complaint.save();
 
@@ -76,10 +76,19 @@ export const updateComplaintStatus = async (req, res) => {
 
 
 export const getMyComplaints = async (req, res) => {
-    try {
-        const complaints = await Complaint.find({ user: req.user.id });
-        res.status(200).json(complaints);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const complaints = await Complaint.find({ user: req.user.id }).sort({ createdAt: -1 });
+    res.status(200).json(complaints);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllComplaints = async (req, res) => {
+  try {
+    const complaints = await Complaint.find().populate("user", "name mobile").sort({ createdAt: -1 });
+    res.status(200).json(complaints);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
