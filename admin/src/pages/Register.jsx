@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../api/axios.js'; 
-import { useAuth } from '../context/AuthContext'; 
+import api from '../api/axios.js';
+import { useAuth } from '../context/AuthContext';
 import { ShieldCheck, User, Lock, Phone, ArrowRight, Key } from 'lucide-react';
 
 const AdminRegisterPage = () => {
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
-    mobile: '',   
+    mobile: '',
     password: '',
     secretKey: '' // Added for admin verification
   });
@@ -21,7 +21,7 @@ const AdminRegisterPage = () => {
       // Sends data to your backend with the Admin role
       const response = await api.post('/auth/register', {
         ...formData,
-        role: "admin" 
+        role: "admin"
       });
 
       const { token, user } = response.data;
@@ -96,20 +96,24 @@ const AdminRegisterPage = () => {
           </div>
 
           {/* Admin Secret Key */}
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 text-blue-600">Admin Secret Key</label>
-            <div className="relative">
-              <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-600" size={18} />
-              <input
-                type="password"
-                required
-                className="w-full pl-12 pr-4 py-3 bg-blue-50 border border-blue-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-800 transition-all font-semibold placeholder:text-blue-200"
-                placeholder="Enter Private Admin Key"
-                onChange={(e) => setFormData({ ...formData, secretKey: e.target.value })}
-              />
-            </div>
+          {/* Admin Secret Key Input Field */}
+          <div className="relative">
+            <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-600" size={18} />
+            <input
+              type="password"
+              required
+              className={`w-full pl-12 pr-4 py-3 bg-blue-50 border rounded-2xl outline-none transition-all font-semibold 
+      ${formData.secretKey === 'admin123' ? 'border-green-500 ring-2 ring-green-100' : 'border-blue-100'}`}
+              placeholder="Enter Private Admin Key"
+              onChange={(e) => setFormData({ ...formData, secretKey: e.target.value })}
+            />
+            {/* Show a checkmark if the key is correct */}
+            {formData.secretKey === 'admin123' && (
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-xs font-bold">
+                VALID KEY
+              </span>
+            )}
           </div>
-
           <button
             type="submit"
             className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-100 flex items-center justify-center gap-2 transition-all active:scale-[0.98] mt-6"
@@ -119,9 +123,9 @@ const AdminRegisterPage = () => {
         </form>
 
         <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-            <Link to="/login" className="text-slate-400 text-xs font-bold hover:text-blue-800 transition-colors uppercase tracking-widest">
-              Back to Admin Login
-            </Link>
+          <Link to="/login" className="text-slate-400 text-xs font-bold hover:text-blue-800 transition-colors uppercase tracking-widest">
+            Back to Admin Login
+          </Link>
         </div>
       </div>
     </div>

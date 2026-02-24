@@ -83,3 +83,19 @@ export const getMyComplaints = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+// Inside complaintController.js
+export const getAllComplaints = async (req, res) => {
+  try {
+    // 1. Fetch all documents from the collection
+    const complaints = await Complaint.find({}); 
+    
+    // 2. Debugging: Log this to your BACKEND terminal
+    console.log(`Found ${complaints.length} complaints in DB`);
+    
+    res.status(200).json(complaints);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching data" });
+  }
+};

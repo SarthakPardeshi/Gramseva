@@ -23,7 +23,7 @@ app.use("/api/complaints", complaintsRoutes);
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("MongoDB Error:", err));
+  .catch((err) => console.log("MongoDB Error:", err) );
 
 const PORT = process.env.PORT || 5000;
 
