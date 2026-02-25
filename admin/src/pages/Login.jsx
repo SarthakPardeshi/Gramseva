@@ -15,7 +15,8 @@ const AdminLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await axios.post(`${apiUrl}/auth/login`, formData);
 
       // Ensure the user logging in is actually an admin
       if (res.data.user.role !== 'admin') {

@@ -16,12 +16,13 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-      
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await axios.post(`${apiUrl}/auth/login`, formData);
+
       // Update global context AND localStorage simultaneously 
       login(res.data.user, res.data.token);
-      
-      navigate('/'); 
+
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
@@ -31,14 +32,14 @@ const LoginPage = () => {
     <PageTransition>
       <div className="min-h-screen bg-[#fdfbf9] flex items-center justify-center p-6">
         {/* Animated Form Container */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-10"
         >
           <div className="text-center mb-10">
-            <motion.div 
+            <motion.div
               initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -51,7 +52,7 @@ const LoginPage = () => {
           </div>
 
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ x: -10, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold mb-6 flex items-center gap-2"
@@ -66,12 +67,12 @@ const LoginPage = () => {
               <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Mobile Number</label>
               <div className="relative">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input 
-                  type="tel" 
+                <input
+                  type="tel"
                   required
                   className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500 transition-all font-medium"
                   placeholder="9900000000"
-                  onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                 />
               </div>
             </div>
@@ -81,20 +82,20 @@ const LoginPage = () => {
               <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   required
                   className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500 transition-all font-medium"
                   placeholder="••••••••"
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
               </div>
             </div>
 
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              type="submit" 
+              type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2 transition-all"
             >
               Sign In <ArrowRight size={18} />
