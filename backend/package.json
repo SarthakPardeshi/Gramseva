@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "gramseva-backend",
   "version": "1.0.0",
   "type": "module",
   "main": "server.js",
@@ -7,12 +7,14 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
+  "author": "Sarthak",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.8.0",
     "mongoose": "^8.3.4",
