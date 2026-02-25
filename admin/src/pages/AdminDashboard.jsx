@@ -186,12 +186,7 @@ const AdminDashboard = () => {
         </AnimatePresence>
       </main>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-900 text-slate-300 px-10 py-12 mt-auto">
-        <div className="text-center">
-          <p className="text-sm">© 2026 Digital Village Initiative.</p>
-        </div>
-      </footer>
+ 
     </div>
   );
 };

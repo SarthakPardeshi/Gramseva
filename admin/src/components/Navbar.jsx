@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, LogIn, Landmark, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -21,45 +21,65 @@ const Navbar = () => {
     { name: "complaints", path: "/complaints" }
   ];
 
-  const handleNavigate = (path) => {
-    navigate(path);
-    setIsOpen(false);
-  };
-
   return (
     <nav className="bg-white shadow-md px-6 md:px-10 py-4 flex justify-between items-center sticky top-0 z-50">
       {/* Logo */}
-      <h1 
+      <div 
         className="text-xl md:text-2xl font-black text-blue-800 cursor-pointer tracking-tight flex items-center gap-2"
-        onClick={() => handleNavigate("/")}
+        onClick={() => { navigate("/"); setIsOpen(false); }}
       >
         <div className="bg-blue-800 p-1.5 rounded-lg text-white">
           <Landmark size={20} />
         </div>
         <span>GRAM <span className="text-orange-500 underline decoration-2 underline-offset-4 md:no-underline">PANCHAYAT</span></span>
-      </h1>
+      </div>
 
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center gap-8 text-gray-600 font-semibold">
         {navLinks.map((link) => (
-          <span
+          <NavLink
             key={link.name}
-            onClick={() => handleNavigate(link.path)}
-            className="cursor-pointer capitalize transition-all duration-200 border-b-2 border-transparent hover:text-blue-500 hover:border-blue-500"
+            to={link.path}
+            className={({ isActive }) => `
+              relative pb-1 capitalize transition-all duration-200 
+              ${isActive ? "text-blue-800" : "hover:text-blue-500"}
+            `}
           >
-            {link.name}
-          </span>
+            {({ isActive }) => (
+              <>
+                {link.name}
+                {isActive && (
+                  <motion.div
+                    layoutId="desktop-nav-underline"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-800"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
         ))}
 
         {user?.role === "admin" && (
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleNavigate("/admin")}
-            className="bg-blue-800 text-white px-5 py-2 rounded-full font-bold shadow-lg text-sm"
+          <NavLink
+            to="/admin"
+            className={({ isActive }) => `
+              relative transition-all duration-200
+              ${isActive ? "scale-105" : ""}
+            `}
           >
-            Admin Panel
-          </motion.button>
+            {({ isActive }) => (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`${
+                  isActive ? "bg-blue-900" : "bg-blue-800"
+                } text-white px-5 py-2 rounded-full font-bold shadow-lg text-sm`}
+              >
+                Admin Panel
+              </motion.button>
+            )}
+          </NavLink>
         )}
 
         <div className="h-6 w-[1px] bg-gray-200 mx-2"></div>
@@ -83,7 +103,7 @@ const Navbar = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => handleNavigate("/login")}
+            onClick={() => navigate("/login")}
             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-md"
           >
             Sign In <LogIn size={16} />
@@ -108,18 +128,22 @@ const Navbar = () => {
             className="absolute top-[72px] left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col p-6 gap-6 md:hidden z-40"
           >
             {navLinks.map((link) => (
-              <span
+              <NavLink
                 key={link.name}
-                onClick={() => handleNavigate(link.path)}
-                className="text-lg font-bold text-gray-700 capitalize border-b pb-2 border-gray-50"
+                to={link.path}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) => `
+                  text-lg font-bold capitalize border-b pb-2 
+                  ${isActive ? "text-blue-800 border-blue-800" : "text-gray-700 border-gray-50"}
+                `}
               >
                 {link.name}
-              </span>
+              </NavLink>
             ))}
             
             {user?.role === "admin" && (
               <button 
-                onClick={() => handleNavigate("/admin")}
+                onClick={() => { navigate("/admin"); setIsOpen(false); }}
                 className="bg-blue-800 text-white w-full py-3 rounded-xl font-bold"
               >
                 Admin Panel
@@ -141,7 +165,7 @@ const Navbar = () => {
               </div>
             ) : (
               <button 
-                onClick={() => handleNavigate("/login")}
+                onClick={() => { navigate("/login"); setIsOpen(false); }}
                 className="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl font-bold shadow-md"
               >
                 Sign In <LogIn size={18} />

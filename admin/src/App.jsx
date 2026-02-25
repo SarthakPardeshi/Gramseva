@@ -7,13 +7,13 @@ import ComplaintsPage from './pages/ComplaintsPage';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register'; // Make sure to import this
 import AdminDashboard from "./pages/AdminDashboard";
-
+import Footer from './components/Footer';
 const App = () => {
   return (
     <div className="min-h-screen bg-[#fdfbf9]">
       {/* Navbar stays at the top of every page */}
       <Navbar />
-      
+
       {/* Routes decide which Page component to show based on the URL */}
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -21,10 +21,11 @@ const App = () => {
         <Route path="/complaints" element={<ComplaintsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        
+
         {/* Admin route */}
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
+      <Footer />
     </div>
   )
 }

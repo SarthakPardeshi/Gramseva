@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import noticeRoutes from "./routes/noticeRoutes.js"
 import complaintsRoutes from "./routes/complaintRoutes.js";
+import statsRoutes from "./routes/statsRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/notices", noticeRoutes);
 app.use("/api/complaints", complaintsRoutes);
+app.use("/api/stats", statsRoutes);
 //imp:  why we use /api every time because we want to maintain a clean and organized structure for our API endpoints. By prefixing our routes with "/api", we can easily distinguish between routes that serve the frontend (like static files) and routes that serve the backend API. This also helps in versioning our API in the future if needed (e.g., "/api/v1/complaint").
 
 
@@ -41,5 +43,5 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT} `);
 });
