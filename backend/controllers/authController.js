@@ -10,12 +10,22 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-    
+
     if (role === 'admin') {
-    if (secretKey !== 'admin123') {
-      return res.status(403).json({ message: "Invalid Secret Key. You cannot register as an admin." });
+      if (secretKey !== 'admin123') {
+        return res.status(403).json({ message: "Invalid Secret Key. You cannot register as an admin." });
+      }
     }
-  }
+
+    const strongPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+    if (!strongPassword.test(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 6 characters and include uppercase, lowercase and number",
+      });
+    }
 
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,7 +45,7 @@ export const register = async (req, res) => {
     );
 
     // 2. Send back the token and user data alongside the success message
-    res.status(201).json({ 
+    res.status(201).json({
       message: "User registered successfully",
       token,
       user: {
