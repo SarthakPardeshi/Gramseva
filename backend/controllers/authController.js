@@ -20,7 +20,7 @@ export const register = async (req, res) => {
     const strongPassword =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
-    if (!strongPassword.test(password)) {
+    if (!password || !strongPassword.test(password)) {
       return res.status(400).json({
         message:
           "Password must be at least 6 characters and include uppercase, lowercase and number",
