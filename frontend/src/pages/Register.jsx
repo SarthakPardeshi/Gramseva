@@ -8,7 +8,7 @@ import { Landmark, User, Lock, Phone, ArrowRight, EyeOff, Eye } from 'lucide-rea
 const RegisterPage = () => {
   const { login } = useAuth(); // 2. Destructure login function
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
