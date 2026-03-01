@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../api/axios.js'; 
+import api from '../api/axios.js';
 import { useAuth } from '../context/AuthContext'; // 1. Import your Auth hook
-import { Landmark, User, Lock, Phone, ArrowRight } from 'lucide-react';
+import { Landmark, User, Lock, Phone, ArrowRight, EyeOff, Eye } from 'lucide-react';
+
 
 const RegisterPage = () => {
   const { login } = useAuth(); // 2. Destructure login function
+  const [showPassword, setShowPassword] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: '',
-    mobile: '',   
+    mobile: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -30,7 +33,7 @@ const RegisterPage = () => {
       login(user, token);
 
       // 5. Redirect to Home instead of Login
-      navigate('/'); 
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Try again.');
     }
@@ -86,16 +89,35 @@ const RegisterPage = () => {
 
           {/* Password */}
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+              Password
+            </label>
+
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-              <input
-                type="password"
-                required
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500 transition-all"
-                placeholder="••••••••"
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              {/* Left Lock Icon */}
+              <Lock
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
               />
+
+              {/* Input */}
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                className="w-full pl-12 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                placeholder="••••••••"
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+              />
+
+              {/* Right Eye Toggle Icon */}
+              <div
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </div>
             </div>
           </div>
 
